@@ -1,825 +1,605 @@
-<html lang="en" class="scroll-smooth"><head>
+<html lang="en" class="dark scroll-smooth"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>snipe-dev | Backend &amp; Web3 Engineer</title>
-    <meta name="description" content="Backend &amp; Web3 Engineer crafting high-performance EVM infrastructure and real-time on-chain systems">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Fira+Code:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            cyan: '#22d3ee',
+                            magenta: '#c026d3',
+                            purple: '#a855f7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #e5e7eb;
-            overflow-x: hidden;
-        }
-        
-        .font-mono {
-            font-family: 'Fira Code', monospace;
-        }
-        
-        /* Animated grid background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            background-color: #020617;
             background-image: 
-                linear-gradient(to right, rgba(34, 211, 238, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
             background-size: 50px 50px;
-            z-index: -1;
-            pointer-events: none;
         }
         
-        /* Gradient orbs */
-        .gradient-orb-cyan {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(34, 211, 238, 0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .gradient-orb-purple {
-            position: fixed;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        /* Glassmorphism cards */
-        .glass-card {
-            background: rgba(15, 15, 15, 0.6);
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(34, 211, 238, 0.1);
         }
         
-        .glass-card:hover {
-            background: rgba(20, 20, 20, 0.7);
-            border-color: rgba(34, 211, 238, 0.3);
-            box-shadow: 0 0 30px rgba(34, 211, 238, 0.15);
-            transform: translateY(-4px);
-        }
-        
-        /* Glow effects */
         .glow-cyan {
             box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
         }
         
-        .glow-purple {
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        .glow-magenta {
+            box-shadow: 0 0 20px rgba(192, 38, 211, 0.3);
         }
         
-        /* Light mode styles */
-        body.light-mode {
-            background-color: #f8fafc;
-            color: #1e293b;
+        .text-glow-cyan {
+            text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
         }
         
-        body.light-mode::before {
-            background-image: 
-                linear-gradient(to right, rgba(34, 211, 238, 0.08) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
+        .gradient-cyber {
+            background: linear-gradient(135deg, #22d3ee 0%, #c026d3 100%);
         }
         
-        body.light-mode .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            border-color: rgba(0, 0, 0, 0.1);
-        }
-        
-        body.light-mode .glass-card:hover {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: rgba(34, 211, 238, 0.4);
-        }
-        
-        body.light-mode .text-gray-400 {
-            color: #64748b !important;
-        }
-        
-        body.light-mode .text-gray-300 {
-            color: #475569 !important;
-        }
-        
-        /* Smooth scroll reveal animations */
-        .reveal {
+        .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
         
-        .reveal.active {
+        .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
         
-        /* Hero image animation */
-        .hero-image {
-            animation: float 6s ease-in-out infinite;
+        .card-hover {
+            transition: all 0.3s ease;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
         }
         
-        /* Navbar scroll effect */
-        .navbar-scrolled {
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        body.light-mode .navbar-scrolled {
-            background: rgba(248, 250, 252, 0.8);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Mobile menu animation */
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        
-        .mobile-menu.open {
-            max-height: 400px;
-        }
-        
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
         
         ::-webkit-scrollbar-track {
-            background: #0a0a0a;
+            background: #0f172a;
         }
         
         ::-webkit-scrollbar-thumb {
-            background: #1f1f1f;
-            border-radius: 5px;
+            background: #22d3ee;
+            border-radius: 4px;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: #2a2a2a;
+            background: #06b6d4;
         }
         
-        body.light-mode ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        
-        body.light-mode ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-        }
-        
-        body.light-mode ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-        
-        /* Skill tag animations */
-        .skill-tag {
-            transition: all 0.3s ease;
-        }
-        
-        .skill-tag:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
-        }
-        
-        /* Form input styles */
-        input, textarea {
-            transition: all 0.3s ease;
-        }
-        
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #22d3ee;
-            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
-        }
-        
-        /* Button hover effects */
-        .btn-primary {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .btn-primary:hover::before {
-            width: 300px;
-            height: 300px;
+        .nav-blur {
+            backdrop-filter: blur(12px);
+            background: rgba(2, 6, 23, 0.8);
         }
     </style>
 </head>
-<body>
-    <!-- Gradient Orbs -->
-    <div class="gradient-orb-cyan" style="top: -300px; left: -200px;"></div>
-    <div class="gradient-orb-purple" style="bottom: -250px; right: -200px;"></div>
-    
+<body class="text-slate-300 font-sans antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
     <!-- Navbar -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-slate-800/50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
-                <a href="#hero" class="text-2xl font-bold font-mono tracking-tight">
-                    <span class="text-cyan-400">snipe</span><span class="text-purple-400">-dev</span>
+                <a href="#" class="flex items-center gap-2 group">
+                    <div class="w-2 h-2 rounded-full bg-cyan-500 glow-cyan"></div>
+                    <span class="text-slate-100 font-mono font-semibold tracking-tight text-lg group-hover:text-cyan-400 transition-colors">snipe-dev</span>
                 </a>
-                
+
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="#about" class="text-sm text-gray-400 hover:text-cyan-400 transition-colors">About</a>
-                    <a href="#skills" class="text-sm text-gray-400 hover:text-cyan-400 transition-colors">Skills</a>
-                    <a href="#projects" class="text-sm text-gray-400 hover:text-cyan-400 transition-colors">Projects</a>
-                    <a href="#contact" class="text-sm text-gray-400 hover:text-cyan-400 transition-colors">Contact</a>
+                    <a href="#about" class="text-sm text-slate-400 hover:text-cyan-400 transition-colors">About</a>
+                    <a href="#stack" class="text-sm text-slate-400 hover:text-cyan-400 transition-colors">Core Stack</a>
+                    <a href="#projects" class="text-sm text-slate-400 hover:text-cyan-400 transition-colors">Projects</a>
+                    <a href="#contact" class="text-sm text-slate-400 hover:text-cyan-400 transition-colors">Contact</a>
                     
                     <!-- Theme Toggle -->
-                    <button id="theme-toggle" class="p-2 rounded-lg glass-card hover:glow-cyan transition-all" aria-label="Toggle theme">
-                        <iconify-icon icon="lucide:sun" class="text-xl hidden dark-icon"></iconify-icon>
-                        <iconify-icon icon="lucide:moon" class="text-xl light-icon"></iconify-icon>
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 transition-colors">
+                        <i data-lucide="moon" class="w-4 h-4 text-cyan-400"></i>
                     </button>
                 </div>
-                
+
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg glass-card">
-                    <iconify-icon icon="lucide:menu" class="text-2xl"></iconify-icon>
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50">
+                    <i data-lucide="menu" class="w-5 h-5 text-cyan-400"></i>
                 </button>
             </div>
-            
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="mobile-menu md:hidden">
-                <div class="flex flex-col gap-4 py-6">
-                    <a href="#about" class="text-gray-400 hover:text-cyan-400 transition-colors mobile-menu-link">About</a>
-                    <a href="#skills" class="text-gray-400 hover:text-cyan-400 transition-colors mobile-menu-link">Skills</a>
-                    <a href="#projects" class="text-gray-400 hover:text-cyan-400 transition-colors mobile-menu-link">Projects</a>
-                    <a href="#contact" class="text-gray-400 hover:text-cyan-400 transition-colors mobile-menu-link">Contact</a>
-                </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800/50 nav-blur">
+            <div class="px-6 py-4 space-y-3">
+                <a href="#about" class="block text-sm text-slate-400 hover:text-cyan-400 transition-colors py-2">About</a>
+                <a href="#stack" class="block text-sm text-slate-400 hover:text-cyan-400 transition-colors py-2">Core Stack</a>
+                <a href="#projects" class="block text-sm text-slate-400 hover:text-cyan-400 transition-colors py-2">Projects</a>
+                <a href="#contact" class="block text-sm text-slate-400 hover:text-cyan-400 transition-colors py-2">Contact</a>
             </div>
         </div>
     </nav>
-    
+
     <!-- Hero Section -->
-    <section id="hero" class="min-h-screen flex items-center justify-center px-6 pt-20">
-        <div class="max-w-7xl w-full mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Text Content -->
-                <div class="space-y-6 reveal">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-cyan-400/20">
-                        <span class="relative flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
-                        </span>
-                        <span class="text-xs font-mono text-cyan-400">Available for remote Web3 roles</span>
-                    </div>
-                    
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
-                        <span class="text-cyan-400">snipe</span><span class="text-purple-400">-dev</span>
-                    </h1>
-                    
-                    <h2 class="text-2xl md:text-3xl font-semibold text-gray-300 leading-snug">
-                        Backend &amp; Web3 Engineer crafting high-performance 
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">EVM infrastructure</span> 
-                        and real-time on-chain systems
-                    </h2>
-                    
-                    <p class="text-lg text-gray-400 max-w-xl">
-                        15+ years in software development, 5+ years deep in blockchain. Specializing in DeFi protocols, transaction decoding, and production-grade monitoring tools.
-                    </p>
-                    
-                    <!-- Social Links -->
-                    <div class="flex flex-wrap gap-4 pt-4">
-                        <a href="https://github.com/snipe-dev" target="_blank" rel="noopener" class="group flex items-center gap-2 px-6 py-3 rounded-lg glass-card hover:glow-cyan transition-all">
-                            <iconify-icon icon="lucide:github" class="text-xl group-hover:text-cyan-400 transition-colors"></iconify-icon>
-                            <span class="font-medium">GitHub</span>
-                        </a>
-                        <a href="https://www.linkedin.com/in/snipe-dev/" target="_blank" rel="noopener" class="group flex items-center gap-2 px-6 py-3 rounded-lg glass-card hover:glow-cyan transition-all">
-                            <iconify-icon icon="lucide:linkedin" class="text-xl group-hover:text-cyan-400 transition-colors"></iconify-icon>
-                            <span class="font-medium">LinkedIn</span>
-                        </a>
-                        <a href="https://x.com/snipe_dev" target="_blank" rel="noopener" class="group flex items-center gap-2 px-6 py-3 rounded-lg glass-card hover:glow-cyan transition-all">
-                            <iconify-icon icon="lucide:twitter" class="text-xl group-hover:text-cyan-400 transition-colors"></iconify-icon>
-                            <span class="font-medium">X</span>
-                        </a>
-                        <a href="https://t.me/snipe_dev" target="_blank" rel="noopener" class="group flex items-center gap-2 px-6 py-3 rounded-lg glass-card hover:glow-cyan transition-all">
-                            <iconify-icon icon="lucide:send" class="text-xl group-hover:text-cyan-400 transition-colors"></iconify-icon>
-                            <span class="font-medium">Telegram</span>
-                        </a>
-                        <a href="https://www.npmjs.com/~snipe-dev" target="_blank" rel="noopener" class="group flex items-center gap-2 px-6 py-3 rounded-lg glass-card hover:glow-cyan transition-all">
-                            <iconify-icon icon="lucide:package" class="text-xl group-hover:text-cyan-400 transition-colors"></iconify-icon>
-                            <span class="font-medium">npm</span>
-                        </a>
-                    </div>
+    <section id="hero" class="min-h-screen flex items-center justify-center pt-16 px-6 relative overflow-hidden">
+        <!-- Gradient Glow -->
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-cyber-magenta/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10 fade-in">
+            <!-- Avatar -->
+            <div class="mb-8 flex justify-center">
+                <div class="relative">
+                    <div class="absolute inset-0 gradient-cyber rounded-full blur-2xl opacity-40"></div>
+                    <img src="https://raw.githubusercontent.com/snipe-dev/snipe-dev.github.io/refs/heads/main/avatar_t.png" alt="snipe-dev" class="relative w-32 h-32 rounded-full border-2 border-cyan-500/50 object-cover" onerror="this.src='https://via.placeholder.com/600x600/22d3ee/020617?text=snipe-dev'">
                 </div>
-                
-                <!-- Hero Image -->
-                <div class="flex justify-center lg:justify-end reveal">
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
-                        <img src="https://raw.githubusercontent.com/snipe-dev/spybot/master/src/assets/logo.png" alt="snipe-dev" class="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full border-4 border-cyan-400/20 hero-image object-cover" onerror="this.src='https://via.placeholder.com/600x600/22d3ee/0a0a0a?text=snipe-dev'">
-                    </div>
-                </div>
+            </div>
+
+            <!-- Name -->
+            <h1 class="text-5xl md:text-7xl font-bold text-slate-100 mb-4 tracking-tight">
+                <span class="font-mono text-glow-cyan">snipe-dev</span>
+            </h1>
+
+            <!-- Tagline -->
+            <p class="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
+                Backend &amp; Web3 Engineer focused on <span class="text-cyan-400 font-medium">EVM infrastructure</span>, 
+                <span class="text-cyan-400 font-medium">real-time on-chain systems</span> and 
+                <span class="text-cyan-400 font-medium">DeFi execution</span>
+            </p>
+
+            <!-- Social Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="https://github.com/snipe-dev" target="_blank" class="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-lg text-sm font-medium text-slate-200 hover:text-cyan-400 transition-all flex items-center gap-2 card-hover">
+                    <i data-lucide="github" class="w-4 h-4"></i>
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/snipe-dev/" target="_blank" class="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-lg text-sm font-medium text-slate-200 hover:text-cyan-400 transition-all flex items-center gap-2 card-hover">
+                    <i data-lucide="linkedin" class="w-4 h-4"></i>
+                    LinkedIn
+                </a>
+                <a href="https://x.com/snipe_dev" target="_blank" class="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-lg text-sm font-medium text-slate-200 hover:text-cyan-400 transition-all flex items-center gap-2 card-hover">
+                    <i data-lucide="twitter" class="w-4 h-4"></i>
+                    X
+                </a>
+                <a href="https://t.me/snipe_dev" target="_blank" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyber-magenta hover:from-cyan-400 hover:to-cyber-magenta text-slate-900 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 glow-cyan card-hover">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                    Telegram
+                </a>
+                <a href="https://www.npmjs.com/~snipe-dev" target="_blank" class="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-lg text-sm font-medium text-slate-200 hover:text-cyan-400 transition-all flex items-center gap-2 card-hover">
+                    <i data-lucide="package" class="w-4 h-4"></i>
+                    npm
+                </a>
             </div>
         </div>
     </section>
-    
+
     <!-- About Section -->
-    <section id="about" class="py-20 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- About Image -->
-                <div class="reveal flex justify-center lg:justify-start order-2 lg:order-1">
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-cyan-400/20 rounded-2xl blur-2xl"></div>
-                        <img src="https://raw.githubusercontent.com/snipe-dev/spybot/master/src/assets/logo.png" alt="snipe-dev profile" class="relative w-full max-w-md rounded-2xl border border-white/10 glass-card" onerror="this.src='https://via.placeholder.com/600x600/a855f7/0a0a0a?text=snipe-dev'">
-                    </div>
-                </div>
-                
-                <!-- About Text -->
-                <div class="space-y-6 reveal order-1 lg:order-2">
-                    <div class="inline-block">
-                        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-2">
-                            About <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Me</span>
-                        </h2>
-                        <div class="h-1 w-20 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full"></div>
-                    </div>
-                    
-                    <div class="space-y-4 text-gray-300 leading-relaxed text-lg">
-                        <p>
-                            I'm <span class="font-semibold text-cyan-400">snipe-dev</span>, a Backend and Web3 Engineer with <span class="font-semibold">15+ years</span> in software development (since 2010) and <span class="font-semibold">5+ years</span> deeply focused on blockchain &amp; crypto (since 2020).
-                        </p>
-                        
-                        <p>
-                            I specialize in <span class="text-purple-400 font-medium">EVM infrastructure</span>, real-time on-chain systems, DeFi protocols, advanced transaction decoding, and production-grade monitoring tools. My core strength is transforming complex blockchain data into <span class="font-medium">deterministic, reliable, and actionable systems</span>.
-                        </p>
-                        
-                        <p>
-                            I build high-load <span class="text-cyan-400 font-medium">Telegram bots</span> for wallet tracking and on-chain analytics, design fault-tolerant RPC pipelines, decode logs/calldata/internal traces, optimize gas, and create MEV-aware execution strategies.
-                        </p>
-                        
-                        <p class="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
-                            Open to remote full-time Web3 Backend / DeFi Infrastructure roles.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-                    Core <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Skills</span>
-                </h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                    Battle-tested technologies and methodologies for building robust blockchain infrastructure
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Languages -->
-                <div class="glass-card rounded-2xl p-8 reveal">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="p-3 rounded-lg bg-cyan-400/10 border border-cyan-400/20">
-                            <iconify-icon icon="lucide:code-2" class="text-2xl text-cyan-400"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-semibold">Languages</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">TypeScript</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">JavaScript (ES6+)</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">Solidity</span>
-                    </div>
-                </div>
-                
-                <!-- EVM & Web3 -->
-                <div class="glass-card rounded-2xl p-8 reveal">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="p-3 rounded-lg bg-purple-400/10 border border-purple-400/20">
-                            <iconify-icon icon="lucide:coins" class="text-2xl text-purple-400"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-semibold">EVM &amp; Web3</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">viem</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">ethers.js v6</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">JSON-RPC</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">debug_traceTransaction</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">Transaction Decoding</span>
-                    </div>
-                </div>
-                
-                <!-- DeFi -->
-                <div class="glass-card rounded-2xl p-8 reveal">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="p-3 rounded-lg bg-cyan-400/10 border border-cyan-400/20">
-                            <iconify-icon icon="lucide:trending-up" class="text-2xl text-cyan-400"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-semibold">DeFi</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">Uniswap V2/V3</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">Multi-hop Swaps</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">Arbitrage</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">Liquidity Analysis</span>
-                    </div>
-                </div>
-                
-                <!-- Smart Contracts -->
-                <div class="glass-card rounded-2xl p-8 reveal">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="p-3 rounded-lg bg-purple-400/10 border border-purple-400/20">
-                            <iconify-icon icon="lucide:file-code" class="text-2xl text-purple-400"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-semibold">Smart Contracts</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">Solidity Architecture</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">Gas Optimization</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">Security Patterns</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">Slither</span>
-                    </div>
-                </div>
-                
-                <!-- Infrastructure -->
-                <div class="glass-card rounded-2xl p-8 reveal">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="p-3 rounded-lg bg-cyan-400/10 border border-cyan-400/20">
-                            <iconify-icon icon="lucide:server" class="text-2xl text-cyan-400"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-semibold">Infrastructure</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">Event-driven Systems</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">Telegram Bots</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">MySQL</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-sm font-medium text-cyan-400">SQLite</span>
-                    </div>
-                </div>
-                
-                <!-- Specialized -->
-                <div class="glass-card rounded-2xl p-8 reveal">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="p-3 rounded-lg bg-purple-400/10 border border-purple-400/20">
-                            <iconify-icon icon="lucide:zap" class="text-2xl text-purple-400"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-semibold">Specialized</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">MEV Strategies</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">RPC Pipelines</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">Trace Analysis</span>
-                        <span class="skill-tag px-4 py-2 rounded-lg bg-purple-400/10 border border-purple-400/20 text-sm font-medium text-purple-400">Real-time Monitoring</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-                    Featured <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Projects</span>
-                </h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                    Production-grade infrastructure and tools for EVM networks
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Project 1 -->
-                <div class="glass-card rounded-2xl overflow-hidden group reveal">
-                    <div class="aspect-video bg-gradient-to-br from-cyan-400/20 to-purple-400/20 flex items-center justify-center p-8 border-b border-white/10">
-                        <img src="https://via.placeholder.com/600x400/22d3ee/0a0a0a?text=Spybot" alt="EVM Wallet Monitoring" class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-semibold mb-3 group-hover:text-cyan-400 transition-colors">EVM Wallet Monitoring Infrastructure</h3>
-                        <p class="text-gray-400 mb-6 leading-relaxed">
-                            Real-time wallet tracking system with deterministic decoding, RPC consensus, internal trace processing and bounded deduplication.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-xs font-medium text-cyan-400">TypeScript</span>
-                            <span class="px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-xs font-medium text-cyan-400">viem</span>
-                            <span class="px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-xs font-medium text-cyan-400">Telegram</span>
-                        </div>
-                        <a href="https://github.com/snipe-dev/spybot" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-colors group/link">
-                            <iconify-icon icon="lucide:github" class="text-xl"></iconify-icon>
-                            <span>View on GitHub</span>
-                            <iconify-icon icon="lucide:arrow-right" class="text-lg group-hover/link:translate-x-1 transition-transform"></iconify-icon>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Project 2 -->
-                <div class="glass-card rounded-2xl overflow-hidden group reveal">
-                    <div class="aspect-video bg-gradient-to-br from-purple-400/20 to-cyan-400/20 flex items-center justify-center p-8 border-b border-white/10">
-                        <img src="https://via.placeholder.com/600x400/a855f7/0a0a0a?text=Deploy+Monitor" alt="EVM Deployment Monitor" class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-semibold mb-3 group-hover:text-purple-400 transition-colors">EVM Deployment Monitor</h3>
-                        <p class="text-gray-400 mb-6 leading-relaxed">
-                            Real-time infrastructure for tracking smart contract deployments across all EVM-compatible networks.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="px-3 py-1 rounded-full bg-purple-400/10 border border-purple-400/20 text-xs font-medium text-purple-400">TypeScript</span>
-                            <span class="px-3 py-1 rounded-full bg-purple-400/10 border border-purple-400/20 text-xs font-medium text-purple-400">ethers.js</span>
-                            <span class="px-3 py-1 rounded-full bg-purple-400/10 border border-purple-400/20 text-xs font-medium text-purple-400">WebSocket</span>
-                        </div>
-                        <a href="https://github.com/snipe-dev/evm-deployment-monitor" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 font-medium transition-colors group/link">
-                            <iconify-icon icon="lucide:github" class="text-xl"></iconify-icon>
-                            <span>View on GitHub</span>
-                            <iconify-icon icon="lucide:arrow-right" class="text-lg group-hover/link:translate-x-1 transition-transform"></iconify-icon>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Project 3 -->
-                <div class="glass-card rounded-2xl overflow-hidden group reveal">
-                    <div class="aspect-video bg-gradient-to-br from-cyan-400/20 to-purple-400/20 flex items-center justify-center p-8 border-b border-white/10">
-                        <img src="https://via.placeholder.com/600x400/22d3ee/0a0a0a?text=Decompiler" alt="EVM Bytecode Decompiler" class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-semibold mb-3 group-hover:text-cyan-400 transition-colors">EVM Bytecode Decompiler</h3>
-                        <p class="text-gray-400 mb-6 leading-relaxed">
-                            Custom opcode parser and stack analyzer for reverse engineering and smart contract audit workflows.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-xs font-medium text-cyan-400">TypeScript</span>
-                            <span class="px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-xs font-medium text-cyan-400">EVM Opcodes</span>
-                            <span class="px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-xs font-medium text-cyan-400">AST</span>
-                        </div>
-                        <a href="https://github.com/snipe-dev/evm-bytecode-decompiler" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-colors group/link">
-                            <iconify-icon icon="lucide:github" class="text-xl"></iconify-icon>
-                            <span>View on GitHub</span>
-                            <iconify-icon icon="lucide:arrow-right" class="text-lg group-hover/link:translate-x-1 transition-transform"></iconify-icon>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Project 4 -->
-                <div class="glass-card rounded-2xl overflow-hidden group reveal">
-                    <div class="aspect-video bg-gradient-to-br from-purple-400/20 to-cyan-400/20 flex items-center justify-center p-8 border-b border-white/10">
-                        <img src="https://via.placeholder.com/600x400/a855f7/0a0a0a?text=Arbitrage" alt="Triangle Arbitrage" class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-semibold mb-3 group-hover:text-purple-400 transition-colors">Triangle Arbitrage Smart Contract</h3>
-                        <p class="text-gray-400 mb-6 leading-relaxed">
-                            On-chain DEX router execution with slippage protection and profit validation.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="px-3 py-1 rounded-full bg-purple-400/10 border border-purple-400/20 text-xs font-medium text-purple-400">Solidity</span>
-                            <span class="px-3 py-1 rounded-full bg-purple-400/10 border border-purple-400/20 text-xs font-medium text-purple-400">Uniswap V2</span>
-                            <span class="px-3 py-1 rounded-full bg-purple-400/10 border border-purple-400/20 text-xs font-medium text-purple-400">DeFi</span>
-                        </div>
-                        <a href="https://github.com/snipe-dev/triangle-arbitrage-swap" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 font-medium transition-colors group/link">
-                            <iconify-icon icon="lucide:github" class="text-xl"></iconify-icon>
-                            <span>View on GitHub</span>
-                            <iconify-icon icon="lucide:arrow-right" class="text-lg group-hover/link:translate-x-1 transition-transform"></iconify-icon>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 px-6">
+    <section id="about" class="py-24 px-6">
         <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-                    Get in <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Touch</span>
-                </h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                    Open to discussing Web3 opportunities, technical challenges, or collaboration on blockchain infrastructure projects
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Contact Form -->
-                <div class="glass-card rounded-2xl p-8 reveal">
-                    <form class="space-y-6" onsubmit="handleSubmit(event)">
-                        <div>
-                            <label for="name" class="block text-sm font-medium mb-2">Name</label>
-                            <input type="text" id="name" name="name" required="" class="w-full px-4 py-3 rounded-lg bg-black/30 border border-white/10 focus:border-cyan-400 transition-all text-white placeholder-gray-500" placeholder="Your name">
-                        </div>
-                        
-                        <div>
-                            <label for="email" class="block text-sm font-medium mb-2">Email</label>
-                            <input type="email" id="email" name="email" required="" class="w-full px-4 py-3 rounded-lg bg-black/30 border border-white/10 focus:border-cyan-400 transition-all text-white placeholder-gray-500" placeholder="your@email.com">
-                        </div>
-                        
-                        <div>
-                            <label for="message" class="block text-sm font-medium mb-2">Message</label>
-                            <textarea id="message" name="message" rows="5" required="" class="w-full px-4 py-3 rounded-lg bg-black/30 border border-white/10 focus:border-cyan-400 transition-all text-white placeholder-gray-500 resize-none" placeholder="Your message..."></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn-primary w-full py-3 px-6 rounded-lg bg-gradient-to-r from-cyan-400 to-purple-400 text-white font-semibold hover:shadow-lg hover:shadow-cyan-400/20 transition-all relative overflow-hidden">
-                            <span class="relative z-10">Send Message</span>
-                        </button>
-                    </form>
+            <div class="glass-panel rounded-2xl p-8 md:p-12 fade-in">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-1 h-8 bg-gradient-to-b from-cyan-500 to-cyber-magenta rounded-full"></div>
+                    <h2 class="text-3xl md:text-4xl font-semibold text-slate-100 tracking-tight">About</h2>
                 </div>
-                
-                <!-- Contact Info -->
-                <div class="space-y-6 reveal">
-                    <div class="glass-card rounded-2xl p-8">
-                        <h3 class="text-xl font-semibold mb-6">Connect with me</h3>
-                        <div class="space-y-4">
-                            <a href="https://github.com/snipe-dev" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-lg bg-black/20 hover:bg-black/40 border border-white/10 hover:border-cyan-400/30 transition-all group">
-                                <div class="p-3 rounded-lg bg-cyan-400/10 border border-cyan-400/20 group-hover:bg-cyan-400/20 transition-all">
-                                    <iconify-icon icon="lucide:github" class="text-2xl text-cyan-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <div class="font-medium">GitHub</div>
-                                    <div class="text-sm text-gray-400">@snipe-dev</div>
-                                </div>
-                            </a>
-                            
-                            <a href="https://www.linkedin.com/in/snipe-dev/" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-lg bg-black/20 hover:bg-black/40 border border-white/10 hover:border-purple-400/30 transition-all group">
-                                <div class="p-3 rounded-lg bg-purple-400/10 border border-purple-400/20 group-hover:bg-purple-400/20 transition-all">
-                                    <iconify-icon icon="lucide:linkedin" class="text-2xl text-purple-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <div class="font-medium">LinkedIn</div>
-                                    <div class="text-sm text-gray-400">snipe-dev</div>
-                                </div>
-                            </a>
-                            
-                            <a href="https://t.me/snipe_dev" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-lg bg-black/20 hover:bg-black/40 border border-white/10 hover:border-cyan-400/30 transition-all group">
-                                <div class="p-3 rounded-lg bg-cyan-400/10 border border-cyan-400/20 group-hover:bg-cyan-400/20 transition-all">
-                                    <iconify-icon icon="lucide:send" class="text-2xl text-cyan-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <div class="font-medium">Telegram</div>
-                                    <div class="text-sm text-gray-400">@snipe_dev</div>
-                                </div>
-                            </a>
-                            
-                            <a href="https://x.com/snipe_dev" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-lg bg-black/20 hover:bg-black/40 border border-white/10 hover:border-purple-400/30 transition-all group">
-                                <div class="p-3 rounded-lg bg-purple-400/10 border border-purple-400/20 group-hover:bg-purple-400/20 transition-all">
-                                    <iconify-icon icon="lucide:twitter" class="text-2xl text-purple-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <div class="font-medium">X (Twitter)</div>
-                                    <div class="text-sm text-gray-400">@snipe_dev</div>
-                                </div>
-                            </a>
-                            
-                            <a href="https://www.npmjs.com/~snipe-dev" target="_blank" rel="noopener" class="flex items-center gap-4 p-4 rounded-lg bg-black/20 hover:bg-black/40 border border-white/10 hover:border-cyan-400/30 transition-all group">
-                                <div class="p-3 rounded-lg bg-cyan-400/10 border border-cyan-400/20 group-hover:bg-cyan-400/20 transition-all">
-                                    <iconify-icon icon="lucide:package" class="text-2xl text-cyan-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <div class="font-medium">npm</div>
-                                    <div class="text-sm text-gray-400">~snipe-dev</div>
-                                </div>
-                            </a>
+
+                <div class="grid md:grid-cols-3 gap-8 items-start">
+                    <div class="md:col-span-2 space-y-4 text-base leading-relaxed">
+                        <p class="text-slate-300">
+                            Backend / Web3 Engineer focused on <span class="text-cyan-400 font-medium">EVM infrastructure</span>, 
+                            <span class="text-cyan-400 font-medium">real-time on-chain systems</span> and 
+                            <span class="text-cyan-400 font-medium">DeFi execution</span>.
+                        </p>
+                        
+                        <p class="text-slate-400 font-medium">I build high-performance solutions for:</p>
+                        
+                        <ul class="space-y-2 text-slate-400">
+                            <li class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                                Block &amp; mempool analysis
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                                Transaction tracing &amp; decoding
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                                Whale monitoring &amp; alerts
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 shrink-0"></div>
+                                MEV-aware execution strategies
+                            </li>
+                        </ul>
+
+                        <div class="pt-4 border-t border-slate-700/50">
+                            <p class="text-slate-300">
+                                Currently <span class="text-cyan-400 font-medium">open to remote full-time</span> Web3 Backend / DeFi Infrastructure roles.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center md:justify-end">
+                        <div class="relative">
+                            <div class="absolute inset-0 gradient-cyber rounded-2xl blur-xl opacity-30"></div>
+                            <img src="https://raw.githubusercontent.com/snipe-dev/snipe-dev.github.io/refs/heads/main/avatar_t.png" alt="snipe-dev avatar" class="relative w-48 h-48 rounded-2xl border-2 border-cyan-500/30 object-cover" onerror="this.src='https://via.placeholder.com/600x600/22d3ee/020617?text=snipe-dev'">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Footer -->
-    <footer class="border-t border-white/10 py-8 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-gray-400 text-sm">
-                    © 2024 <span class="font-mono text-cyan-400">snipe-dev</span>. All rights reserved.
+
+    <!-- Core Stack Section -->
+    <section id="stack" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <div class="w-1 h-8 bg-gradient-to-b from-cyan-500 to-cyber-magenta rounded-full"></div>
+                    <h2 class="text-3xl md:text-4xl font-semibold text-slate-100 tracking-tight">Core Stack</h2>
+                    <div class="w-1 h-8 bg-gradient-to-b from-cyber-magenta to-cyan-500 rounded-full"></div>
                 </div>
-                
-                <div class="flex gap-6">
-                    <a href="https://github.com/snipe-dev" target="_blank" rel="noopener" class="text-gray-400 hover:text-cyan-400 transition-colors">
-                        <iconify-icon icon="lucide:github" class="text-xl"></iconify-icon>
+                <p class="text-slate-400 text-lg">Technologies &amp; tools I work with daily</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Languages -->
+                <div class="glass-panel rounded-xl p-6 fade-in card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="code-2" class="w-5 h-5 text-cyan-400"></i>
+                        <h3 class="text-lg font-semibold text-slate-100">Languages</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
+                            TypeScript
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
+                            JavaScript (ES6+)
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
+                            Solidity
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EVM & Web3 -->
+                <div class="glass-panel rounded-xl p-6 fade-in card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="hexagon" class="w-5 h-5 text-cyber-magenta"></i>
+                        <h3 class="text-lg font-semibold text-slate-100">EVM &amp; Web3</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyber-magenta"></div>
+                            viem
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyber-magenta"></div>
+                            ethers.js v6
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyber-magenta"></div>
+                            Low-level decoding (logs, calldata, internal calls, traces)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DeFi & Trading -->
+                <div class="glass-panel rounded-xl p-6 fade-in card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="trending-up" class="w-5 h-5 text-cyan-400"></i>
+                        <h3 class="text-lg font-semibold text-slate-100">DeFi &amp; Trading</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
+                            Uniswap V2/V3
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
+                            Slippage &amp; liquidity analysis
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
+                            Multi-hop &amp; triangular arbitrage
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
+                            Gas optimization
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Infrastructure -->
+                <div class="glass-panel rounded-xl p-6 fade-in card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="server" class="w-5 h-5 text-cyber-magenta"></i>
+                        <h3 class="text-lg font-semibold text-slate-100">Infrastructure</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyber-magenta"></div>
+                            Resilient RPC providers
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyber-magenta"></div>
+                            Event-driven systems
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-slate-300">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyber-magenta"></div>
+                            Telegram bots (high-load)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <div class="w-1 h-8 bg-gradient-to-b from-cyan-500 to-cyber-magenta rounded-full"></div>
+                    <h2 class="text-3xl md:text-4xl font-semibold text-slate-100 tracking-tight">Projects</h2>
+                    <div class="w-1 h-8 bg-gradient-to-b from-cyber-magenta to-cyan-500 rounded-full"></div>
+                </div>
+                <p class="text-slate-400 text-lg">Recent work &amp; open-source contributions</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Project 1 -->
+                <div class="glass-panel rounded-xl p-6 fade-in card-hover group">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-gradient-to-br from-cyan-500/10 to-cyber-magenta/10 rounded-lg border border-cyan-500/20 group-hover:border-cyan-500/50 transition-colors">
+                            <i data-lucide="eye" class="w-6 h-6 text-cyan-400"></i>
+                        </div>
+                        <a href="https://github.com/snipe-dev/spybot" target="_blank" class="p-2 hover:bg-slate-800 rounded-lg transition-colors">
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-colors"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-100 mb-3 group-hover:text-cyan-400 transition-colors">
+                        EVM Wallet Monitoring Infrastructure
+                    </h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                        Real-time wallet tracking system with deterministic decoding, RPC consensus, internal trace processing and bounded deduplication.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded border border-cyan-500/20 font-mono">TypeScript</span>
+                        <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded border border-cyan-500/20 font-mono">viem</span>
+                        <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded border border-cyan-500/20 font-mono">Telegram</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="glass-panel rounded-xl p-6 fade-in card-hover group">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-gradient-to-br from-cyber-magenta/10 to-cyan-500/10 rounded-lg border border-cyber-magenta/20 group-hover:border-cyber-magenta/50 transition-colors">
+                            <i data-lucide="radar" class="w-6 h-6 text-cyber-magenta"></i>
+                        </div>
+                        <a href="https://github.com/snipe-dev/evm-deployment-monitor" target="_blank" class="p-2 hover:bg-slate-800 rounded-lg transition-colors">
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-cyber-magenta transition-colors"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-100 mb-3 group-hover:text-cyber-magenta transition-colors">
+                        EVM Deployment Monitor
+                    </h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                        Real-time infrastructure for tracking smart contract deployments across EVM-compatible networks.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-cyber-magenta/10 text-cyber-magenta text-xs rounded border border-cyber-magenta/20 font-mono">TypeScript</span>
+                        <span class="px-2 py-1 bg-cyber-magenta/10 text-cyber-magenta text-xs rounded border border-cyber-magenta/20 font-mono">ethers.js</span>
+                        <span class="px-2 py-1 bg-cyber-magenta/10 text-cyber-magenta text-xs rounded border border-cyber-magenta/20 font-mono">Events</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="glass-panel rounded-xl p-6 fade-in card-hover group">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-gradient-to-br from-cyan-500/10 to-cyber-magenta/10 rounded-lg border border-cyan-500/20 group-hover:border-cyan-500/50 transition-colors">
+                            <i data-lucide="binary" class="w-6 h-6 text-cyan-400"></i>
+                        </div>
+                        <a href="https://github.com/snipe-dev/evm-bytecode-decompiler" target="_blank" class="p-2 hover:bg-slate-800 rounded-lg transition-colors">
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-colors"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-100 mb-3 group-hover:text-cyan-400 transition-colors">
+                        EVM Bytecode Decompiler
+                    </h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                        Custom opcode parser and stack analyzer for reverse engineering and audit workflows.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded border border-cyan-500/20 font-mono">JavaScript</span>
+                        <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded border border-cyan-500/20 font-mono">Opcodes</span>
+                        <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded border border-cyan-500/20 font-mono">AST</span>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="glass-panel rounded-xl p-6 fade-in card-hover group">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-gradient-to-br from-cyber-magenta/10 to-cyan-500/10 rounded-lg border border-cyber-magenta/20 group-hover:border-cyber-magenta/50 transition-colors">
+                            <i data-lucide="arrow-left-right" class="w-6 h-6 text-cyber-magenta"></i>
+                        </div>
+                        <a href="https://github.com/snipe-dev/triangle-arbitrage-swap" target="_blank" class="p-2 hover:bg-slate-800 rounded-lg transition-colors">
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-cyber-magenta transition-colors"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-100 mb-3 group-hover:text-cyber-magenta transition-colors">
+                        Triangle Arbitrage Smart Contract
+                    </h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                        On-chain DEX router execution with slippage protection and profit validation.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-cyber-magenta/10 text-cyber-magenta text-xs rounded border border-cyber-magenta/20 font-mono">Solidity</span>
+                        <span class="px-2 py-1 bg-cyber-magenta/10 text-cyber-magenta text-xs rounded border border-cyber-magenta/20 font-mono">Uniswap</span>
+                        <span class="px-2 py-1 bg-cyber-magenta/10 text-cyber-magenta text-xs rounded border border-cyber-magenta/20 font-mono">DeFi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <div class="w-1 h-8 bg-gradient-to-b from-cyan-500 to-cyber-magenta rounded-full"></div>
+                    <h2 class="text-3xl md:text-4xl font-semibold text-slate-100 tracking-tight">Get In Touch</h2>
+                    <div class="w-1 h-8 bg-gradient-to-b from-cyber-magenta to-cyan-500 rounded-full"></div>
+                </div>
+                <p class="text-slate-400 text-lg">Open to collaboration and full-time opportunities</p>
+            </div>
+
+            
+
+
+                    <div class="glass-panel rounded-xl p-6">
+					
+                        <h3 class="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                            <i data-lucide="link" class="w-5 h-5 text-cyber-magenta"></i>
+                            Social Links
+                        </h3>
+						
+            <!-- Social Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="https://github.com/snipe-dev" target="_blank" class="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-lg text-sm font-medium text-slate-200 hover:text-cyan-400 transition-all flex items-center gap-2 card-hover">
+                    <i data-lucide="github" class="w-4 h-4"></i>
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/snipe-dev/" target="_blank" class="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-lg text-sm font-medium text-slate-200 hover:text-cyan-400 transition-all flex items-center gap-2 card-hover">
+                    <i data-lucide="linkedin" class="w-4 h-4"></i>
+                    LinkedIn
+                </a>
+                <a href="https://x.com/snipe_dev" target="_blank" class="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-lg text-sm font-medium text-slate-200 hover:text-cyan-400 transition-all flex items-center gap-2 card-hover">
+                    <i data-lucide="twitter" class="w-4 h-4"></i>
+                    X
+                </a>
+                <a href="https://t.me/snipe_dev" target="_blank" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyber-magenta hover:from-cyan-400 hover:to-cyber-magenta text-slate-900 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 glow-cyan card-hover">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                    Telegram
+                </a>
+                <a href="https://www.npmjs.com/~snipe-dev" target="_blank" class="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-lg text-sm font-medium text-slate-200 hover:text-cyan-400 transition-all flex items-center gap-2 card-hover">
+                    <i data-lucide="package" class="w-4 h-4"></i>
+                    npm
+                </a>
+            </div>
+						
+                    </div>
+       
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-6 border-t border-slate-800/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-cyan-500 glow-cyan"></div>
+                    <span class="text-slate-400 text-sm">© 2025 snipe-dev. All rights reserved.</span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="https://github.com/snipe-dev" target="_blank" class="text-slate-500 hover:text-cyan-400 transition-colors">
+                        <i data-lucide="github" class="w-5 h-5"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/snipe-dev/" target="_blank" rel="noopener" class="text-gray-400 hover:text-cyan-400 transition-colors">
-                        <iconify-icon icon="lucide:linkedin" class="text-xl"></iconify-icon>
+                    <a href="https://www.linkedin.com/in/snipe-dev/" target="_blank" class="text-slate-500 hover:text-cyan-400 transition-colors">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
                     </a>
-                    <a href="https://x.com/snipe_dev" target="_blank" rel="noopener" class="text-gray-400 hover:text-cyan-400 transition-colors">
-                        <iconify-icon icon="lucide:twitter" class="text-xl"></iconify-icon>
+                    <a href="https://x.com/snipe_dev" target="_blank" class="text-slate-500 hover:text-cyan-400 transition-colors">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
                     </a>
-                    <a href="https://t.me/snipe_dev" target="_blank" rel="noopener" class="text-gray-400 hover:text-cyan-400 transition-colors">
-                        <iconify-icon icon="lucide:send" class="text-xl"></iconify-icon>
+                    <a href="https://t.me/snipe_dev" target="_blank" class="text-slate-500 hover:text-cyan-400 transition-colors">
+                        <i data-lucide="send" class="w-5 h-5"></i>
                     </a>
                 </div>
             </div>
         </div>
     </footer>
-    
+
     <script>
-        // Smooth scroll reveal animation
-        const revealElements = document.querySelectorAll('.reveal');
-        
-        const revealOnScroll = () => {
-            revealElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('active');
-                }
-            });
-        };
-        
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // Initial check
-        
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('navbar-scrolled');
-            } else {
-                navbar.classList.remove('navbar-scrolled');
-            }
-        });
-        
+        // Initialize Lucide icons
+        lucide.createIcons();
+
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         
         mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('open');
+            mobileMenu.classList.toggle('hidden');
         });
-        
-        // Close mobile menu on link click
-        document.querySelectorAll('.mobile-menu-link').forEach(link => {
+
+        // Close mobile menu when clicking on a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
+                mobileMenu.classList.add('hidden');
             });
         });
-        
-        // Theme toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-        
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            body.classList.add('light-mode');
-        }
-        
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-            
-            // Save preference
-            if (body.classList.contains('light-mode')) {
-                localStorage.setItem('theme', 'light');
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-blur', 'border-slate-800/80');
             } else {
-                localStorage.setItem('theme', 'dark');
+                navbar.classList.remove('nav-blur', 'border-slate-800/80');
             }
         });
-        
-        // Form submission handler
-        function handleSubmit(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(event.target);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const message = formData.get('message');
-            
-            // Here you would typically send this data to a backend
-            // For now, we'll just show an alert
-            alert(`Thank you for your message, ${name}! I'll get back to you at ${email} soon.`);
-            
-            // Reset form
-            event.target.reset();
-        }
-        
-        // Smooth scrolling for anchor links
+
+        // Theme toggle (optional - already dark by default)
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -832,6 +612,13 @@
                 }
             });
         });
+
+        // Form submission handler (placeholder)
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Form submission would happen here. Connect to your backend or email service.');
+        });
     </script>
+
 
 </body></html>
