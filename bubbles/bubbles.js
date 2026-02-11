@@ -45,6 +45,13 @@
       window.addEventListener("resize", resize);
       resize();
 
+      // === Adaptive scale based on screen width ===
+      function getScreenScale() {
+        const baseWidth = 1920;
+        const scale = window.innerWidth / baseWidth;
+        return Math.min(Math.max(scale, 0.45), 1);
+      }
+
       async function loadConfig() {
         const response = await fetch(configPath);
         const data = await response.json();
@@ -54,6 +61,11 @@
 
         glowEnabled = data.glow ?? true;
         glowColor = data.glowColor || "#22d3ee";
+
+        // === Adaptive bubble count for mobile ===
+        if (window.innerWidth < 768) {
+          bubbleCount = Math.floor(bubbleCount * 0.6);
+        }
 
         const loaded = await Promise.all(
           data.icons.map(item => {
@@ -71,7 +83,8 @@
 
       function weightToRadius(weight) {
         const normalized = Math.min(Math.max(weight, 1), 10) / 10;
-        return MIN_RADIUS + normalized * (MAX_RADIUS - MIN_RADIUS);
+        const scale = getScreenScale();
+        return (MIN_RADIUS + normalized * (MAX_RADIUS - MIN_RADIUS)) * scale;
       }
 
       class Bubble {
@@ -95,52 +108,34 @@
 
           const minBounce = 0.4;
 
-          // Left wall
           if (this.x - this.radius < 0) {
             this.x = this.radius;
             this.vx = Math.abs(this.vx);
-
-            if (Math.abs(this.vx) < minBounce) {
-              this.vx = minBounce;
-            }
+            if (Math.abs(this.vx) < minBounce) this.vx = minBounce;
           }
 
-          // Right wall
           if (this.x + this.radius > window.innerWidth) {
             this.x = window.innerWidth - this.radius;
             this.vx = -Math.abs(this.vx);
-
-            if (Math.abs(this.vx) < minBounce) {
-              this.vx = -minBounce;
-            }
+            if (Math.abs(this.vx) < minBounce) this.vx = -minBounce;
           }
 
-          // Top wall
           if (this.y - this.radius < 0) {
             this.y = this.radius;
             this.vy = Math.abs(this.vy);
-
-            if (Math.abs(this.vy) < minBounce) {
-              this.vy = minBounce;
-            }
+            if (Math.abs(this.vy) < minBounce) this.vy = minBounce;
           }
 
-          // Bottom wall
           if (this.y + this.radius > window.innerHeight) {
             this.y = window.innerHeight - this.radius;
             this.vy = -Math.abs(this.vy);
-
-            if (Math.abs(this.vy) < minBounce) {
-              this.vy = -minBounce;
-            }
+            if (Math.abs(this.vy) < minBounce) this.vy = -minBounce;
           }
         }
-
 
         draw() {
           ctx.save();
 
-          // === Base bubble ===
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
           ctx.fillStyle = "rgba(34,211,238,0.05)";
@@ -148,24 +143,21 @@
           ctx.closePath();
 
           if (glowEnabled) {
-
-            // Clip to bubble
             ctx.save();
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
             ctx.clip();
 
-            // Gradient from edge to center
             const innerGlow = ctx.createRadialGradient(
               this.x,
               this.y,
-              this.radius,        // start at edge
+              this.radius,
               this.x,
               this.y,
-              this.radius * 0.2   // fade toward center
+              this.radius * 0.2
             );
 
-            innerGlow.addColorStop(0, glowColor + "44");  // bright edge
+            innerGlow.addColorStop(0, glowColor + "44");
             innerGlow.addColorStop(0.2, glowColor + "11");
             innerGlow.addColorStop(1, "rgba(0,0,0,0)");
 
@@ -177,7 +169,6 @@
             ctx.restore();
           }
 
-          // === Icon ===
           const size = this.radius * 1.2;
 
           ctx.drawImage(
@@ -190,8 +181,6 @@
 
           ctx.restore();
         }
-
-
       }
 
       function resolveCollision(b1, b2) {
