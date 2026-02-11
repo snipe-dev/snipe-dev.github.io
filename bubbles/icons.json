@@ -17,7 +17,7 @@
     { "file": "mysql.svg", "weight": 4 },
     { "file": "sqlite.svg", "weight": 4 },
     { "file": "mongodb.svg", "weight": 4 },
-    { "file": "postgres.svg", "weight": 4 },
+    { "file": "react.svg", "weight": 4 },
     { "file": "telegram.svg", "weight": 6 },
     { "file": "pancakeswap.svg", "weight": 5},
     { "file": "solana.svg", "weight": 4 },
