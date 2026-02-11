@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Recolored to green shades -->
+<svg width="800px" height="800px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <title>file_type_solidity_green</title>
+
+    <path d="M20.477,2l-4.5,8h-9l4.5-8h9"
+          style="fill:#6FCF97;opacity:0.45;isolation:isolate"/>
+
+    <path d="M11.52,30l4.5-8h9l-4.5,8h-9"
+          style="fill:#27AE60;opacity:0.45;isolation:isolate"/>
+
+    <path d="M15.975,10h9l-4.5-8h-9Z"
+          style="fill:#2ECC71;opacity:0.6;isolation:isolate"/>
+
+    <path d="M16.022,22h-9l4.5,8h9Z"
+          style="fill:#1E8449;opacity:0.6;isolation:isolate"/>
+
+    <path d="M11.477,18l4.5-8-4.5-8-4.5,8Z"
+          style="fill:#145A32;opacity:0.8;isolation:isolate"/>
+
+    <path d="M20.52,14l-4.5,8,4.5,8,4.5-8Z"
+          style="fill:#0B5345;opacity:0.8;isolation:isolate"/>
+</svg>

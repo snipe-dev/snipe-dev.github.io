@@ -1,0 +1,29 @@
+{
+  "bubbleCount": 20,
+  "speed": 4.6,
+  "glow": true,
+  "glowColor": "#c026d3",
+  "icons": [
+    { "file": "typescript.svg", "weight": 10 },
+    { "file": "ethereum.svg", "weight": 10 },
+    { "file": "javascript.svg", "weight": 9 },
+    { "file": "nodejs.svg", "weight": 8 },
+    { "file": "uniswap.svg", "weight": 8 },
+    { "file": "bsc.svg", "weight": 7 },
+    { "file": "solidity.svg", "weight": 7 },
+    { "file": "hardhat.svg", "weight": 6 },
+    { "file": "react.svg", "weight": 5 },
+    { "file": "postgres.svg", "weight": 4 },
+    { "file": "mysql.svg", "weight": 4 },
+    { "file": "sqlite.svg", "weight": 4 },
+    { "file": "mongodb.svg", "weight": 4 },
+    { "file": "postgres.svg", "weight": 4 },
+    { "file": "telegram.svg", "weight": 6 },
+    { "file": "pancakeswap.svg", "weight": 5},
+    { "file": "solana.svg", "weight": 4 },
+    { "file": "tether.svg", "weight": 4 },
+    { "file": "avalanche.svg", "weight": 5 },
+    { "file": "usd-coin.svg", "weight": 4 },
+    { "file": "toncoin.svg", "weight": 4 }
+  ]
+}

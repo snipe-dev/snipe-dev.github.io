@@ -16,8 +16,11 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="css/tailwind.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="bubbles/bubbles.css">
 </head>
 <body class="dark:text-slate-300 text-slate-700 font-sans antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+<canvas id="tech-bubbles"></canvas>
 
 <!-- Navbar -->
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b dark:border-slate-800/50 border-slate-200/50 transition-all duration-300">
@@ -529,6 +532,9 @@
 
 <!-- Scripts -->
 <script src="scripts.js"></script>
-
+<script src="bubbles/bubbles.js"></script>
+<script>
+    TechBubbles.init();
+</script>
 </body>
 </html>
