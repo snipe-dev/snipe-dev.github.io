@@ -1,0 +1,25 @@
+{
+  "name": "snipe-dev.github.io",
+  "version": "1.0.0",
+  "description": "This repository hosts my personal **GitHub Pages** website.",
+  "main": "scripts.js",
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snipe-dev/snipe-dev.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/snipe-dev/snipe-dev.github.io/issues"
+  },
+  "homepage": "https://github.com/snipe-dev/snipe-dev.github.io#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}
