@@ -5,11 +5,14 @@ floating technology bubbles with:
 
 Developed together with LLM ChatGPT 5.2 to enhance a minimal portfolio
 background using icons that best represent my core skills and technology
-stack.\
+stack.
+
 The original visual inspiration comes from the well-known website
-https://cryptobubbles.net.\
-You are free to copy, modify, and adapt this code to your own needs.\
-The best support is simply giving this repository a star.
+https://cryptobubbles.net.
+
+You are free to copy, modify, and adapt this code to your own needs.
+
+⭐️⭐️⭐️The best support is simply giving this repository a star.⭐️⭐️⭐️
 
 -   Elastic collisions
 -   Wall bounce physics
